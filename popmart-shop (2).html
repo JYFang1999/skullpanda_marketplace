@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Skullpanda Bazaar — 2nd Hand Collectibles</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ===== DESIGN TOKENS ===== */
+:root {
+  --pink-100: #FFF8F5;
+  --pink-200: #FADADD;
+  --pink-300: #F8C8DC;
+  --pink-400: #F2A8C4;
+  --brown:    #B08A72;
+  --brown-dark: #8B6555;
+  --text-dark: #3D2B2B;
+  --text-mid:  #7A5A5A;
+  --text-light:#B09898;
+  --white:     #FFFFFF;
+  --shadow-sm: 0 2px 8px rgba(176,138,114,0.12);
+  --shadow-md: 0 6px 24px rgba(176,138,114,0.18);
+  --shadow-lg: 0 16px 48px rgba(176,138,114,0.22);
+  --radius-sm: 12px;
+  --radius-md: 20px;
+  --radius-lg: 28px;
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--pink-100);
+  color: var(--text-dark);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ===== NAVBAR ===== */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(255,248,245,0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(248,200,220,0.5);
+  padding: 0 24px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.nav-logo-icon {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, var(--pink-300), var(--pink-400));
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.nav-logo-text {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: 1.1rem;
+  color: var(--text-dark);
+  line-height: 1;
+}
+
+.nav-logo-text span { color: var(--brown); }
+
+.nav-search {
+  flex: 1;
+  max-width: 420px;
+  position: relative;
+}
+
+.nav-search input {
+  width: 100%;
+  background: var(--white);
+  border: 1.5px solid var(--pink-300);
+  border-radius: 999px;
+  padding: 9px 18px 9px 42px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.88rem;
+  color: var(--text-dark);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-shadow: var(--shadow-sm);
+}
+
+.nav-search input:focus {
+  border-color: var(--pink-400);
+  box-shadow: 0 0 0 3px rgba(242,168,196,0.2);
+}
+
+.nav-search input::placeholder { color: var(--text-light); }
+
+.nav-search-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-light);
+  font-size: 1rem;
+  pointer-events: none;
+}
+
+.nav-actions { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+
+.nav-icon-btn {
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  border: 1.5px solid var(--pink-300);
+  background: var(--white);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  font-size: 1rem;
+  color: var(--text-mid);
+  transition: all 0.2s;
+  box-shadow: var(--shadow-sm);
+}
+.nav-icon-btn:hover { border-color: var(--pink-400); background: var(--pink-200); }
+
+/* ===== HERO ===== */
+.hero {
+  padding: 48px 24px 0;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  gap: 24px;
+}
+
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--pink-200);
+  color: var(--brown-dark);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 5px 14px;
+  border-radius: 999px;
+  margin-bottom: 14px;
+  border: 1px solid var(--pink-300);
+}
+
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  line-height: 1.1;
+  color: var(--text-dark);
+  margin-bottom: 10px;
+}
+
+.hero h1 em {
+  font-style: normal;
+  color: var(--brown);
+}
+
+.hero-sub {
+  color: var(--text-mid);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  max-width: 460px;
+}
+
+.hero-img {
+  font-size: 5rem;
+  line-height: 1;
+  filter: drop-shadow(0 8px 16px rgba(176,138,114,0.25));
+  animation: gentleFloat 4s ease-in-out infinite;
+}
+
+/* ===== STATS ===== */
+.stats-row {
+  max-width: 1200px;
+  margin: 32px auto 0;
+  padding: 0 24px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.stat-card {
+  background: var(--white);
+  border-radius: var(--radius-md);
+  padding: 20px 24px;
+  border: 1px solid rgba(248,200,220,0.6);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.stat-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+
+.stat-icon { font-size: 1.3rem; margin-bottom: 4px; }
+
+.stat-value {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-light);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* ===== FEATURED ===== */
+.section {
+  max-width: 1200px;
+  margin: 40px auto 0;
+  padding: 0 24px;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.section-link {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--brown);
+  text-decoration: none;
+  padding: 6px 14px;
+  border: 1.5px solid var(--pink-300);
+  border-radius: 999px;
+  transition: all 0.2s;
+}
+.section-link:hover { background: var(--pink-200); border-color: var(--pink-400); }
+
+.featured-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+/* ===== FILTERS ===== */
+.filters-row {
+  max-width: 1200px;
+  margin: 40px auto 0;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.filter-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-light);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  flex-shrink: 0;
+}
+
+.filter-pills {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.pill {
+  background: var(--white);
+  border: 1.5px solid var(--pink-300);
+  color: var(--text-mid);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  font-size: 0.82rem;
+  padding: 7px 18px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.18s;
+  box-shadow: var(--shadow-sm);
+  white-space: nowrap;
+}
+
+.pill:hover { border-color: var(--pink-400); color: var(--brown-dark); }
+
+.pill.active {
+  background: var(--text-dark);
+  border-color: var(--text-dark);
+  color: var(--white);
+  box-shadow: var(--shadow-md);
+}
+
+/* ===== MAIN GRID ===== */
+.grid-section {
+  max-width: 1200px;
+  margin: 24px auto 80px;
+  padding: 0 24px;
+}
+
+.main-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 20px;
+}
+
+/* ===== PRODUCT CARD ===== */
+.card {
+  background: var(--white);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid rgba(248,200,220,0.4);
+  transition: transform 0.22s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.22s;
+  position: relative;
+  cursor: pointer;
+  animation: fadeUp 0.45s ease both;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-lg);
+}
+
+.card-img-wrap {
+  position: relative;
+  height: 190px;
+  background: linear-gradient(145deg, #FFF0F4, #FDE8F0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.card:nth-child(3n) .card-img-wrap   { background: linear-gradient(145deg, #F5F0FF, #EDE8FF); }
+.card:nth-child(3n+2) .card-img-wrap { background: linear-gradient(145deg, #F0F7FF, #E8F0FF); }
+
+.card-img-wrap::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 35% 30%, rgba(255,255,255,0.55), transparent 65%);
+  pointer-events: none;
+}
+
+.card img {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  position: relative;
+  z-index: 1;
+  transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+  filter: drop-shadow(0 6px 12px rgba(100,50,80,0.18));
+}
+
+.card:hover img { transform: scale(1.1) translateY(-4px); }
+
+.badge-condition {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-size: 0.67rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 999px;
+  z-index: 3;
+  border: 1px solid rgba(0,0,0,0.06);
+}
+
+.badge-condition.mint { background: #D4F7E7; color: #1A6645; }
+.badge-condition.good { background: #FFF3CD; color: #856404; }
+.badge-condition.fair { background: #FFE5CC; color: #7D4A10; }
+
+.fave-btn {
+  position: absolute;
+  top: 10px; right: 10px;
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: var(--white);
+  border: 1px solid rgba(248,200,220,0.6);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.95rem;
+  cursor: pointer;
+  z-index: 3;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s, background 0.2s;
+}
+.fave-btn:hover { transform: scale(1.2); background: #FFF0F4; }
+.fave-btn.liked { background: #FFE0EA; }
+
+/* SOLD OVERLAY */
+.card.sold .card-img-wrap::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(61,43,43,0.42);
+  z-index: 2;
+  border-radius: 0;
+}
+
+.sold-badge {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%) rotate(-12deg);
+  background: var(--text-dark);
+  color: var(--white);
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  padding: 6px 22px;
+  border-radius: 6px;
+  letter-spacing: 0.12em;
+  z-index: 4;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+}
+
+.card.sold .sold-badge { display: block; }
+.card.sold .fave-btn { display: none; }
+
+/* Card body */
+.card-body {
+  padding: 14px 16px 16px;
+}
+
+.card-series {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--brown);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 12px;
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.price-block { display: flex; flex-direction: column; gap: 1px; }
+
+.price {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  line-height: 1;
+}
+
+.price-orig {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-light);
+  text-decoration: line-through;
+}
+
+.dm-btn {
+  background: linear-gradient(135deg, var(--pink-300), var(--pink-400));
+  color: var(--text-dark);
+  border: none;
+  border-radius: 999px;
+  padding: 7px 16px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 700;
+  font-size: 0.78rem;
+  cursor: pointer;
+  box-shadow: 0 3px 10px rgba(242,168,196,0.4);
+  transition: all 0.18s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.dm-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 16px rgba(242,168,196,0.55);
+  background: linear-gradient(135deg, var(--pink-400), #EC8FB0);
+}
+
+.dm-btn:disabled {
+  background: #EEE;
+  color: var(--text-light);
+  box-shadow: none;
+  cursor: default;
+  transform: none;
+}
+
+/* ===== SKELETON ===== */
+.skeleton {
+  animation: shimmer 1.5s infinite linear;
+  background: linear-gradient(90deg, #f5e8e8 25%, #fad8dc 50%, #f5e8e8 75%);
+  background-size: 200% 100%;
+  border-radius: var(--radius-sm);
+}
+
+.skel-card {
+  background: var(--white);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid rgba(248,200,220,0.4);
+  box-shadow: var(--shadow-sm);
+}
+
+.skel-img   { height: 190px; }
+.skel-body  { padding: 14px 16px 16px; }
+.skel-line  { height: 10px; margin-bottom: 8px; border-radius: 6px; }
+.skel-title { height: 14px; margin-bottom: 12px; width: 80%; border-radius: 6px; }
+.skel-price { height: 18px; width: 50%; border-radius: 6px; }
+
+/* ===== EMPTY STATE ===== */
+.empty-state {
+  grid-column: 1/-1;
+  text-align: center;
+  padding: 60px 20px;
+}
+.empty-icon { font-size: 4rem; margin-bottom: 16px; }
+.empty-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  color: var(--text-dark);
+  margin-bottom: 8px;
+}
+.empty-sub { color: var(--text-light); font-size: 0.9rem; }
+
+/* ===== ERROR STATE ===== */
+.error-banner {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 24px 28px;
+  background: #FFF5F5;
+  border: 1.5px solid #FFCCCC;
+  border-radius: var(--radius-md);
+  text-align: center;
+  display: none;
+}
+.error-banner.show { display: block; }
+.error-banner h3 { color: #C0392B; margin-bottom: 8px; font-family: 'Playfair Display', serif; }
+.error-banner p  { color: var(--text-mid); font-size: 0.88rem; }
+
+/* ===== SELL FAB ===== */
+.sell-fab {
+  position: fixed;
+  bottom: 28px;
+  right: 24px;
+  z-index: 200;
+  background: linear-gradient(135deg, var(--pink-300), var(--pink-400));
+  color: var(--text-dark);
+  border: none;
+  border-radius: 999px;
+  padding: 14px 24px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  box-shadow: 0 6px 24px rgba(242,168,196,0.55);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  transition: transform 0.2s, box-shadow 0.2s;
+  animation: fabBounce 0.6s 1s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+
+.sell-fab:hover {
+  transform: translateY(-3px) scale(1.04);
+  box-shadow: 0 10px 32px rgba(242,168,196,0.65);
+}
+
+.sell-fab-dot {
+  width: 8px; height: 8px;
+  background: var(--text-dark);
+  border-radius: 50%;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* ===== LOADING MSG ===== */
+.loading-msg {
+  text-align: center;
+  padding: 16px;
+  color: var(--text-mid);
+  font-size: 0.9rem;
+  font-weight: 500;
+  display: none;
+}
+.loading-msg.show { display: block; }
+.loading-msg span { animation: dots 1.4s infinite; }
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeUp {
+  from { opacity:0; transform: translateY(18px); }
+  to   { opacity:1; transform: translateY(0); }
+}
+
+@keyframes shimmer {
+  from { background-position: -200% 0; }
+  to   { background-position:  200% 0; }
+}
+
+@keyframes gentleFloat {
+  0%,100% { transform: translateY(0) rotate(-2deg); }
+  50%      { transform: translateY(-10px) rotate(2deg); }
+}
+
+@keyframes pulse {
+  0%,100% { opacity:1; transform: scale(1); }
+  50%      { opacity:0.5; transform: scale(0.7); }
+}
+
+@keyframes fabBounce {
+  from { opacity:0; transform: translateY(40px) scale(0.8); }
+  to   { opacity:1; transform: translateY(0) scale(1); }
+}
+
+@keyframes dots {
+  0%,20%  { content: '.'; }
+  40%     { content: '..'; }
+  60%,100%{ content: '...'; }
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .hero { grid-template-columns: 1fr; }
+  .hero-img { display: none; }
+  .stats-row { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .stat-card { padding: 14px 12px; }
+  .stat-value { font-size: 1.4rem; }
+  .featured-grid { grid-template-columns: repeat(2, 1fr); }
+  .featured-grid .card:last-child { display: none; }
+  .nav-search { max-width: 180px; }
+  .sell-fab span.label { display: none; }
+  .sell-fab { padding: 14px 16px; border-radius: 50%; width: 52px; height: 52px; justify-content: center; }
+}
+
+@media (max-width: 480px) {
+  .stats-row { grid-template-columns: 1fr; }
+  .featured-grid { grid-template-columns: 1fr; }
+  .featured-grid .card:last-child { display: block; }
+  .navbar { padding: 0 16px; }
+  .nav-search { display: none; }
+  .hero { padding-top: 28px; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <a class="nav-logo" href="#">
+    <div class="nav-logo-icon">🐼</div>
+    <div class="nav-logo-text">Skull<span>Bazaar</span></div>
+  </a>
+  <div class="nav-search">
+    <span class="nav-search-icon">🔍</span>
+    <input type="text" id="searchInput" placeholder="Search figurines, series…" oninput="handleSearch()">
+  </div>
+  <div class="nav-actions">
+    <button class="nav-icon-btn" title="Wishlist" id="navWishlistBtn" onclick="toggleWishlistView()">🤍</button>
+    <button class="nav-icon-btn" title="Refresh" onclick="loadProducts()">↻</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div>
+    <div class="hero-eyebrow">✦ Authentic Pre-owned ✦ Verified</div>
+    <h1>Your Curated<br><em>Skullpanda</em><br>Marketplace</h1>
+    <p class="hero-sub">Hand-picked 2nd hand figures & keychains for collectors. Every item personally inspected.</p>
+  </div>
+  <div class="hero-img">🐼</div>
+</section>
+
+<!-- STATS -->
+<div class="stats-row" id="statsRow">
+  <div class="stat-card">
+    <div class="stat-icon">📦</div>
+    <div class="stat-value" id="statTotal">—</div>
+    <div class="stat-label">Total Listings</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon">✅</div>
+    <div class="stat-value" id="statSold">—</div>
+    <div class="stat-label">Items Sold</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon">🛍️</div>
+    <div class="stat-value" id="statActive">—</div>
+    <div class="stat-label">Active Listings</div>
+  </div>
+</div>
+
+<!-- FEATURED -->
+<section class="section" id="featuredSection" style="display:none">
+  <div class="section-header">
+    <div class="section-title">✨ Featured Listings</div>
+    <a class="section-link" href="#allListings">See all →</a>
+  </div>
+  <div class="featured-grid" id="featuredGrid"></div>
+</section>
+
+<!-- ERROR -->
+<div class="error-banner" id="errorBanner">
+  <h3>😢 Couldn't load products</h3>
+  <p>We had trouble connecting to the inventory sheet. Please check your connection and try again.</p>
+  <br>
+  <button class="dm-btn" onclick="loadProducts()">Try Again</button>
+</div>
+
+<!-- FILTERS -->
+<div class="filters-row" id="allListings">
+  <span class="filter-label">Filter:</span>
+  <div class="filter-pills">
+    <button class="pill active" onclick="setFilter('all',this)">All Items</button>
+    <button class="pill" onclick="setFilter('figure',this)">Figures</button>
+    <button class="pill" onclick="setFilter('keychain',this)">Keychains</button>
+    <button class="pill" onclick="setFilter('available',this)">Available</button>
+    <button class="pill" onclick="setFilter('sold',this)">Sold</button>
+  </div>
+</div>
+
+<!-- LOADING MSG -->
+<div class="loading-msg show" id="loadingMsg">Loading inventory<span>...</span></div>
+
+<!-- MAIN GRID -->
+<div class="grid-section">
+  <div class="main-grid" id="mainGrid">
+    <!-- skeleton cards -->
+    <div class="skel-card"><div class="skel-img skeleton"></div><div class="skel-body"><div class="skel-line skeleton"></div><div class="skel-title skeleton"></div><div class="skel-price skeleton"></div></div></div>
+    <div class="skel-card"><div class="skel-img skeleton"></div><div class="skel-body"><div class="skel-line skeleton"></div><div class="skel-title skeleton"></div><div class="skel-price skeleton"></div></div></div>
+    <div class="skel-card"><div class="skel-img skeleton"></div><div class="skel-body"><div class="skel-line skeleton"></div><div class="skel-title skeleton"></div><div class="skel-price skeleton"></div></div></div>
+    <div class="skel-card"><div class="skel-img skeleton"></div><div class="skel-body"><div class="skel-line skeleton"></div><div class="skel-title skeleton"></div><div class="skel-price skeleton"></div></div></div>
+  </div>
+</div>
+
+<!-- SELL FAB -->
+<a class="sell-fab" href="sell.html">
+  <div class="sell-fab-dot"></div>
+  <span class="label">Sell an Item</span>
+</a>
+
+<script>
+// ===== STATE =====
+const SHEET_CSV = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSMA2Qr-hc5_ynw0ns1BHyeeI04WcGK-PlfxWhMbAZN2sLYLZP0xodWHIBc_augjQ2ZDldRyQh7uVLV/pub?output=csv';
+let allProducts = [];
+let currentFilter = 'all';
+let searchQuery = '';
+let wishlist = new Set();
+let showingWishlist = false;
+
+// ===== CSV PARSER =====
+function parseCSV(text) {
+  const lines = text.trim().split('\n');
+  const headers = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g, ''));
+  return lines.slice(1).map(line => {
+    // Handle quoted fields with commas inside
+    const cols = [];
+    let cur = '', inQ = false;
+    for (let ch of line) {
+      if (ch === '"') { inQ = !inQ; }
+      else if (ch === ',' && !inQ) { cols.push(cur.trim()); cur = ''; }
+      else cur += ch;
+    }
+    cols.push(cur.trim());
+    const obj = {};
+    headers.forEach((h, i) => { obj[h] = (cols[i] || '').replace(/^"|"$/g, ''); });
+    return {
+      id:        obj.id,
+      name:      obj.name,
+      series:    obj.series,
+      type:      obj.type,
+      price:     parseInt(obj.price) || 0,
+      origPrice: parseInt(obj.origPrice) || 0,
+      condition: obj.condition,
+      img:       obj.img,
+      sold:      obj.sold === 'TRUE' || obj.sold === 'true' || obj.sold === '1'
+    };
+  }).filter(p => p.id);
+}
+
+// ===== LOAD =====
+async function loadProducts() {
+  document.getElementById('loadingMsg').classList.add('show');
+  document.getElementById('errorBanner').classList.remove('show');
+  document.getElementById('featuredSection').style.display = 'none';
+  renderSkeletons();
+
+  try {
+    // Cache-bust to avoid stale CORS preflight
+    const res = await fetch(SHEET_CSV + '&_=' + Date.now());
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const text = await res.text();
+    allProducts = parseCSV(text);
+    if (!allProducts.length) throw new Error('empty');
+    onDataLoaded();
+  } catch (e) {
+    document.getElementById('loadingMsg').classList.remove('show');
+    document.getElementById('errorBanner').classList.add('show');
+    document.getElementById('mainGrid').innerHTML = '';
+  }
+}
+
+function onDataLoaded() {
+  document.getElementById('loadingMsg').classList.remove('show');
+  updateStats();
+  renderFeatured();
+  renderCards();
+}
+
+// ===== STATS =====
+function updateStats() {
+  const total  = allProducts.length;
+  const sold   = allProducts.filter(p => p.sold).length;
+  const active = total - sold;
+  document.getElementById('statTotal').textContent  = total;
+  document.getElementById('statSold').textContent   = sold;
+  document.getElementById('statActive').textContent = active;
+}
+
+// ===== FEATURED =====
+function renderFeatured() {
+  const featured = allProducts.filter(p => !p.sold).slice(0, 3);
+  if (!featured.length) return;
+  document.getElementById('featuredGrid').innerHTML = featured.map(p => cardHTML(p)).join('');
+  document.getElementById('featuredSection').style.display = 'block';
+}
+
+// ===== MAIN RENDER =====
+function getFiltered() {
+  let list = showingWishlist
+    ? allProducts.filter(p => wishlist.has(p.id))
+    : allProducts;
+  if (currentFilter === 'figure')    list = list.filter(p => p.type === 'figure');
+  if (currentFilter === 'keychain')  list = list.filter(p => p.type === 'keychain');
+  if (currentFilter === 'available') list = list.filter(p => !p.sold);
+  if (currentFilter === 'sold')      list = list.filter(p => p.sold);
+  if (searchQuery) {
+    const q = searchQuery.toLowerCase();
+    list = list.filter(p =>
+      p.name.toLowerCase().includes(q) ||
+      p.series.toLowerCase().includes(q) ||
+      p.type.toLowerCase().includes(q)
+    );
+  }
+  return list;
+}
+
+function renderCards() {
+  const grid = document.getElementById('mainGrid');
+  const list = getFiltered();
+  if (!list.length) {
+    grid.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">🐼</div>
+        <div class="empty-title">${showingWishlist ? 'No saved items yet' : 'No items found'}</div>
+        <p class="empty-sub">${showingWishlist ? 'Tap 🤍 on any card to save it here.' : 'Try a different filter or search term.'}</p>
+      </div>`;
+    return;
+  }
+  grid.innerHTML = list.map((p, i) =>
+    `<div style="animation-delay:${i * 0.055}s">${cardHTML(p)}</div>`
+  ).join('');
+}
+
+function cardHTML(p) {
+  const cClass = (p.condition || '').toLowerCase();
+  const isLiked = wishlist.has(p.id);
+  const fmtKRW = n => '₩' + n.toLocaleString('ko-KR');
+  return `
+    <div class="card${p.sold ? ' sold' : ''}" data-type="${p.type}" data-id="${p.id}">
+      <div class="card-img-wrap">
+        <span class="badge-condition ${cClass}">${p.condition}</span>
+        <button class="fave-btn${isLiked ? ' liked' : ''}" onclick="toggleFave(event,'${p.id}')" title="Save">${isLiked ? '❤️' : '🤍'}</button>
+        <img src="${p.img}" alt="${p.name}" onerror="this.src='https://placehold.co/120x120/FADADD/3D2B2B?text=🐼'">
+        <div class="sold-badge">SOLD</div>
+      </div>
+      <div class="card-body">
+        <div class="card-series">${p.series}</div>
+        <div class="card-name">${p.name}</div>
+        <div class="card-footer">
+          <div class="price-block">
+            <span class="price">${fmtKRW(p.price)}</span>
+            <span class="price-orig">${fmtKRW(p.origPrice)}</span>
+          </div>
+          <button class="dm-btn" ${p.sold ? 'disabled' : ''}>${p.sold ? 'Sold Out' : 'DM to Buy'}</button>
+        </div>
+      </div>
+    </div>`;
+}
+
+function renderSkeletons() {
+  const g = document.getElementById('mainGrid');
+  g.innerHTML = Array(4).fill(`
+    <div class="skel-card">
+      <div class="skel-img skeleton"></div>
+      <div class="skel-body">
+        <div class="skel-line skeleton"></div>
+        <div class="skel-title skeleton"></div>
+        <div class="skel-price skeleton"></div>
+      </div>
+    </div>`).join('');
+}
+
+// ===== CONTROLS =====
+function setFilter(type, btn) {
+  currentFilter = type;
+  document.querySelectorAll('.pill').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  showingWishlist = false;
+  document.getElementById('navWishlistBtn').textContent = '🤍';
+  renderCards();
+}
+
+function handleSearch() {
+  searchQuery = document.getElementById('searchInput').value;
+  renderCards();
+}
+
+function toggleFave(e, id) {
+  e.stopPropagation();
+  if (wishlist.has(id)) wishlist.delete(id); else wishlist.add(id);
+  // Update all instances of this card's fave button
+  document.querySelectorAll(`.card[data-id="${id}"] .fave-btn`).forEach(btn => {
+    btn.classList.toggle('liked', wishlist.has(id));
+    btn.textContent = wishlist.has(id) ? '❤️' : '🤍';
+  });
+  document.getElementById('navWishlistBtn').textContent = wishlist.size > 0 ? `❤️` : '🤍';
+  if (showingWishlist) renderCards();
+}
+
+function toggleWishlistView() {
+  showingWishlist = !showingWishlist;
+  document.getElementById('navWishlistBtn').textContent = showingWishlist ? '💔' : (wishlist.size > 0 ? '❤️' : '🤍');
+  renderCards();
+  if (showingWishlist) document.getElementById('allListings').scrollIntoView({ behavior: 'smooth' });
+}
+
+// ===== INIT =====
+loadProducts();
+</script>
+</body>
+</html>
