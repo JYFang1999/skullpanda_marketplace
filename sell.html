@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>List an Item — Skullpanda Bazaar</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --pink-100: #FFF8F5;
+  --pink-200: #FADADD;
+  --pink-300: #F8C8DC;
+  --pink-400: #F2A8C4;
+  --brown:    #B08A72;
+  --brown-dark: #8B6555;
+  --text-dark: #3D2B2B;
+  --text-mid:  #7A5A5A;
+  --text-light:#B09898;
+  --white:     #FFFFFF;
+  --shadow-sm: 0 2px 8px rgba(176,138,114,0.12);
+  --shadow-md: 0 6px 24px rgba(176,138,114,0.18);
+  --shadow-lg: 0 16px 48px rgba(176,138,114,0.22);
+  --radius-sm: 12px;
+  --radius-md: 20px;
+  --radius-lg: 28px;
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--pink-100);
+  color: var(--text-dark);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* NAVBAR */
+.navbar {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(255,248,245,0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(248,200,220,0.5);
+  padding: 0 24px; height: 64px;
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+}
+.nav-logo {
+  display: flex; align-items: center; gap: 10px;
+  text-decoration: none; flex-shrink: 0;
+}
+.nav-logo-icon {
+  width: 36px; height: 36px;
+  background: linear-gradient(135deg, var(--pink-300), var(--pink-400));
+  border-radius: 10px; display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem; box-shadow: var(--shadow-sm);
+}
+.nav-logo-text {
+  font-family: 'Playfair Display', serif; font-weight: 900;
+  font-size: 1.1rem; color: var(--text-dark); line-height: 1;
+}
+.nav-logo-text span { color: var(--brown); }
+.nav-back {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 0.85rem; font-weight: 600; color: var(--text-mid);
+  text-decoration: none; padding: 8px 16px;
+  border: 1.5px solid var(--pink-300); border-radius: 999px;
+  background: var(--white); box-shadow: var(--shadow-sm); transition: all 0.2s;
+}
+.nav-back:hover { border-color: var(--pink-400); background: var(--pink-200); color: var(--text-dark); }
+
+/* PAGE HEADER */
+.page-header {
+  max-width: 680px; margin: 48px auto 0; padding: 0 24px;
+}
+.page-eyebrow {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--pink-200); color: var(--brown-dark);
+  font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; padding: 5px 14px; border-radius: 999px;
+  margin-bottom: 14px; border: 1px solid var(--pink-300);
+}
+.page-title {
+  font-family: 'Playfair Display', serif; font-weight: 900;
+  font-size: clamp(1.8rem, 4vw, 2.6rem); line-height: 1.1;
+  color: var(--text-dark); margin-bottom: 8px;
+}
+.page-title em { font-style: normal; color: var(--brown); }
+.page-sub { color: var(--text-mid); font-size: 0.95rem; line-height: 1.6; }
+
+/* FORM CARD */
+.form-wrap { max-width: 680px; margin: 32px auto 80px; padding: 0 24px; }
+.form-card {
+  background: var(--white); border-radius: var(--radius-lg);
+  border: 1px solid rgba(248,200,220,0.5); box-shadow: var(--shadow-md);
+  padding: 36px 40px; animation: fadeUp 0.45s ease both;
+}
+
+/* SECTIONS */
+.form-section { margin-bottom: 32px; }
+.form-section-title {
+  font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700;
+  color: var(--text-dark); margin-bottom: 18px; padding-bottom: 10px;
+  border-bottom: 1px solid rgba(248,200,220,0.6);
+  display: flex; align-items: center; gap: 8px;
+}
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
+.form-group:last-child { margin-bottom: 0; }
+
+label {
+  font-size: 0.8rem; font-weight: 700; color: var(--text-mid);
+  text-transform: uppercase; letter-spacing: 0.08em;
+}
+label .req { color: var(--pink-400); margin-left: 2px; }
+
+input[type="text"], input[type="number"], input[type="url"], select {
+  width: 100%; background: var(--pink-100);
+  border: 1.5px solid var(--pink-300); border-radius: var(--radius-sm);
+  padding: 11px 14px; font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem; color: var(--text-dark); outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+  appearance: none; -webkit-appearance: none;
+}
+input:focus, select:focus {
+  border-color: var(--pink-400); background: var(--white);
+  box-shadow: 0 0 0 3px rgba(242,168,196,0.18);
+}
+input::placeholder { color: var(--text-light); }
+
+select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23B09898' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 14px center;
+  padding-right: 36px; cursor: pointer;
+}
+
+.field-hint { font-size: 0.74rem; color: var(--text-light); margin-top: 2px; }
+
+/* IMAGE PREVIEW */
+.img-preview-wrap { margin-top: 10px; display: none; }
+.img-preview-wrap.show { display: block; }
+.img-preview {
+  width: 100px; height: 100px; object-fit: cover;
+  border-radius: var(--radius-sm); border: 1.5px solid var(--pink-300);
+  box-shadow: var(--shadow-sm);
+}
+
+/* SOLD TOGGLE */
+.toggle-row {
+  display: flex; align-items: center; justify-content: space-between;
+  background: var(--pink-100); border: 1.5px solid var(--pink-300);
+  border-radius: var(--radius-sm); padding: 12px 14px;
+}
+.toggle-label { font-size: 0.9rem; color: var(--text-mid); font-weight: 500; }
+.toggle-sub   { font-size: 0.75rem; color: var(--text-light); margin-top: 2px; }
+.toggle-switch { position: relative; width: 44px; height: 24px; flex-shrink: 0; }
+.toggle-switch input { opacity: 0; width: 0; height: 0; }
+.toggle-track {
+  position: absolute; inset: 0; background: #E8D8D8;
+  border-radius: 999px; cursor: pointer; transition: background 0.2s;
+}
+.toggle-track::after {
+  content: ''; position: absolute; width: 18px; height: 18px;
+  left: 3px; top: 3px; background: var(--white); border-radius: 50%;
+  transition: transform 0.2s; box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+}
+.toggle-switch input:checked + .toggle-track { background: var(--pink-400); }
+.toggle-switch input:checked + .toggle-track::after { transform: translateX(20px); }
+
+/* SUBMIT */
+.submit-area { margin-top: 32px; display: flex; flex-direction: column; gap: 12px; }
+.submit-btn {
+  width: 100%;
+  background: linear-gradient(135deg, var(--pink-300), var(--pink-400));
+  color: var(--text-dark); border: none; border-radius: 999px;
+  padding: 16px 32px; font-family: 'DM Sans', sans-serif;
+  font-weight: 700; font-size: 1rem; cursor: pointer;
+  box-shadow: 0 4px 16px rgba(242,168,196,0.45); transition: all 0.2s;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.submit-btn:hover:not(:disabled) {
+  transform: translateY(-2px); box-shadow: 0 8px 24px rgba(242,168,196,0.6);
+}
+.submit-btn:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
+
+.spinner {
+  width: 18px; height: 18px;
+  border: 2px solid rgba(61,43,43,0.2); border-top-color: var(--text-dark);
+  border-radius: 50%; animation: spin 0.7s linear infinite; display: none;
+}
+.submit-btn.loading .spinner { display: block; }
+.submit-btn.loading .btn-text { opacity: 0.6; }
+
+.cancel-link {
+  text-align: center; font-size: 0.85rem; color: var(--text-light);
+  text-decoration: none; transition: color 0.2s;
+}
+.cancel-link:hover { color: var(--text-mid); }
+
+/* ERROR BANNER */
+.form-error {
+  background: #FFF0F0; border: 1.5px solid #FFB8B8; border-radius: var(--radius-sm);
+  padding: 12px 16px; font-size: 0.85rem; color: #C0392B;
+  display: none; align-items: center; gap: 8px; margin-bottom: 16px;
+}
+.form-error.show { display: flex; }
+
+/* SUCCESS */
+.success-overlay {
+  display: none; flex-direction: column; align-items: center;
+  justify-content: center; text-align: center; padding: 60px 32px; gap: 16px;
+}
+.success-overlay.show { display: flex; }
+.success-icon {
+  width: 72px; height: 72px;
+  background: linear-gradient(135deg, var(--pink-200), var(--pink-300));
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-size: 2rem; box-shadow: var(--shadow-md);
+  animation: popIn 0.5s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+.success-title {
+  font-family: 'Playfair Display', serif; font-size: 1.5rem;
+  font-weight: 700; color: var(--text-dark);
+}
+.success-sub { color: var(--text-mid); font-size: 0.9rem; max-width: 320px; line-height: 1.6; }
+.success-redirect { font-size: 0.82rem; color: var(--text-light); }
+.success-redirect strong { color: var(--brown); }
+
+/* ANIMATIONS */
+@keyframes fadeUp {
+  from { opacity:0; transform: translateY(18px); }
+  to   { opacity:1; transform: translateY(0); }
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes popIn {
+  from { opacity:0; transform: scale(0.7); }
+  to   { opacity:1; transform: scale(1); }
+}
+
+@media (max-width: 600px) {
+  .form-card { padding: 24px 20px; }
+  .form-row  { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <a class="nav-logo" href="index.html">
+    <div class="nav-logo-icon">🐼</div>
+    <div class="nav-logo-text">Skull<span>Bazaar</span></div>
+  </a>
+  <a class="nav-back" href="index.html">← Back to Marketplace</a>
+</nav>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="page-eyebrow">✦ New Listing</div>
+  <h1 class="page-title">List Your<br><em>Item for Sale</em></h1>
+  <p class="page-sub">Fill in the details below and your item will appear in the marketplace.</p>
+</div>
+
+<!-- FORM CARD -->
+<div class="form-wrap">
+  <div class="form-card" id="formCard">
+
+    <!-- SUCCESS STATE -->
+    <div class="success-overlay" id="successOverlay">
+      <div class="success-icon">🎉</div>
+      <div class="success-title">Item Listed!</div>
+      <p class="success-sub">Your item has been added to the inventory sheet and will appear on the marketplace shortly.</p>
+      <p class="success-redirect">Redirecting in <strong id="countdown">3</strong>s…</p>
+    </div>
+
+    <!-- FORM CONTENT -->
+    <div id="formContent">
+
+      <!-- Error banner -->
+      <div class="form-error" id="formError">
+        <span>⚠️</span><span id="formErrorMsg">Something went wrong. Please try again.</span>
+      </div>
+
+      <!-- Section 1: Basic Info -->
+      <div class="form-section">
+        <div class="form-section-title">🏷️ Basic Information</div>
+        <div class="form-group">
+          <label for="f-name">Item Name <span class="req">*</span></label>
+          <input type="text" id="f-name" placeholder="e.g. Skullpanda Windflower">
+        </div>
+        <div class="form-group">
+          <label for="f-series">Series <span class="req">*</span></label>
+          <input type="text" id="f-series" placeholder="e.g. Skullpanda L'impressionnisme">
+        </div>
+        <div class="form-group">
+          <label for="f-type">Type <span class="req">*</span></label>
+          <select id="f-type">
+            <option value="" disabled selected>Select a type…</option>
+            <option value="figure">Figure</option>
+            <option value="keychain">Keychain</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Section 2: Pricing -->
+      <div class="form-section">
+        <div class="form-section-title">💰 Pricing</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="f-price">Your Selling Price (₩) <span class="req">*</span></label>
+            <input type="number" id="f-price" placeholder="e.g. 25000" min="0">
+            <span class="field-hint">The price you're selling for</span>
+          </div>
+          <div class="form-group">
+            <label for="f-origPrice">Original Retail Price (₩) <span class="req">*</span></label>
+            <input type="number" id="f-origPrice" placeholder="e.g. 35000" min="0">
+            <span class="field-hint">Pop Mart original price</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 3: Condition & Photo -->
+      <div class="form-section">
+        <div class="form-section-title">✨ Condition & Photo</div>
+        <div class="form-group">
+          <label for="f-condition">Condition <span class="req">*</span></label>
+          <select id="f-condition">
+            <option value="" disabled selected>Select condition…</option>
+            <option value="Mint">Mint — like new, no flaws</option>
+            <option value="Good">Good — minor signs of use</option>
+            <option value="Fair">Fair — visible wear, still great</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="f-img">Image URL <span class="req">*</span></label>
+          <input type="url" id="f-img" placeholder="https://..." oninput="previewImage(this.value)">
+          <span class="field-hint">Paste a direct link to your product photo</span>
+          <div class="img-preview-wrap" id="imgPreviewWrap">
+            <img class="img-preview" id="imgPreview" src="" alt="Preview">
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 4: Availability -->
+      <div class="form-section">
+        <div class="form-section-title">📦 Availability</div>
+        <div class="toggle-row">
+          <div>
+            <div class="toggle-label">Mark as Sold</div>
+            <div class="toggle-sub">Turn on if this item is already sold</div>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="f-sold">
+            <span class="toggle-track"></span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Submit -->
+      <div class="submit-area">
+        <button class="submit-btn" id="submitBtn" onclick="submitListing()">
+          <div class="spinner"></div>
+          <span class="btn-text">✦ List Item for Sale</span>
+        </button>
+        <a class="cancel-link" href="index.html">Cancel and go back</a>
+      </div>
+
+    </div><!-- /formContent -->
+  </div><!-- /form-card -->
+</div><!-- /form-wrap -->
+
+<script>
+// ===== CONFIG =====
+// Paste your Google Apps Script Web App URL below after deploying
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxUrZV18EiM84EFB_Gr9fL0gtNWF4frOoO5iQJLzViTqXK3x_GIEJT4QLiYVQTU7BA-/exec";
+
+// ===== IMAGE PREVIEW =====
+function previewImage(url) {
+  const wrap = document.getElementById('imgPreviewWrap');
+  const img  = document.getElementById('imgPreview');
+  if (url && url.startsWith('http')) {
+    img.src = url;
+    img.onload  = () => wrap.classList.add('show');
+    img.onerror = () => wrap.classList.remove('show');
+  } else {
+    wrap.classList.remove('show');
+  }
+}
+
+// ===== VALIDATION =====
+function validate() {
+  // field id → friendly label mapping (matches Google Sheet columns)
+  const fields = [
+    { id: 'f-name',      label: 'Item Name' },
+    { id: 'f-series',    label: 'Series' },
+    { id: 'f-type',      label: 'Type' },
+    { id: 'f-price',     label: 'Selling Price' },
+    { id: 'f-origPrice', label: 'Original Price' },
+    { id: 'f-condition', label: 'Condition' },
+    { id: 'f-img',       label: 'Image URL' }
+  ];
+  for (const f of fields) {
+    if (!document.getElementById(f.id).value.trim()) {
+      showError('Please fill in the "' + f.label + '" field.');
+      document.getElementById(f.id).focus();
+      return false;
+    }
+  }
+  const imgVal = document.getElementById('f-img').value.trim();
+  if (!imgVal.startsWith('http')) {
+    showError('Please enter a valid image URL starting with http.');
+    document.getElementById('f-img').focus();
+    return false;
+  }
+  return true;
+}
+
+// ===== ERROR =====
+function showError(msg) {
+  const el = document.getElementById('formError');
+  document.getElementById('formErrorMsg').textContent = msg;
+  el.classList.add('show');
+  el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+function hideError() {
+  document.getElementById('formError').classList.remove('show');
+}
+
+// ===== SUBMIT =====
+async function submitListing() {
+  hideError();
+  if (!validate()) return;
+
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.classList.add('loading');
+
+  // URL parameters must match the Google Sheet column names exactly:
+  // id | name | series | type | price | origPrice | condition | img | sold
+  const params = new URLSearchParams({
+    id:        Date.now().toString(),
+    name:      document.getElementById('f-name').value.trim(),
+    series:    document.getElementById('f-series').value.trim(),
+    type:      document.getElementById('f-type').value,
+    price:     document.getElementById('f-price').value,
+    origPrice: document.getElementById('f-origPrice').value,
+    condition: document.getElementById('f-condition').value,
+    img:       document.getElementById('f-img').value.trim(),
+    sold:      document.getElementById('f-sold').checked ? 'TRUE' : 'FALSE'
+  });
+
+  try {
+    const res    = await fetch(WEB_APP_URL + '?' + params.toString());
+    const result = await res.json();
+    if (result.status === 'success') {
+      showSuccess();
+    } else {
+      throw new Error(result.message || 'Unexpected error from server');
+    }
+  } catch (err) {
+    btn.disabled = false;
+    btn.classList.remove('loading');
+    showError('Submission failed: ' + err.message + '. Please check your Apps Script URL.');
+  }
+}
+
+// ===== SUCCESS + REDIRECT =====
+function showSuccess() {
+  document.getElementById('formContent').style.display = 'none';
+  document.getElementById('successOverlay').classList.add('show');
+
+  let count = 3;
+  const el  = document.getElementById('countdown');
+  const t   = setInterval(() => {
+    count--;
+    el.textContent = count;
+    if (count <= 0) {
+      clearInterval(t);
+      window.location.href = 'index.html';
+    }
+  }, 1000);
+}
+</script>
+</body>
+</html>
