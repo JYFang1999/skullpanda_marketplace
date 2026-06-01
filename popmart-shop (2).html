@@ -743,15 +743,6 @@ body {
   </div>
 </div>
 
-<!-- FEATURED -->
-<section class="section" id="featuredSection" style="display:none">
-  <div class="section-header">
-    <div class="section-title">✨ Featured Listings</div>
-    <a class="section-link" href="#allListings">See all →</a>
-  </div>
-  <div class="featured-grid" id="featuredGrid"></div>
-</section>
-
 <!-- ERROR -->
 <div class="error-banner" id="errorBanner">
   <h3>😢 Couldn't load products</h3>
@@ -856,7 +847,6 @@ async function loadProducts() {
 function onDataLoaded() {
   document.getElementById('loadingMsg').classList.remove('show');
   updateStats();
-  renderFeatured();
   renderCards();
 }
 
@@ -871,12 +861,6 @@ function updateStats() {
 }
 
 // ===== FEATURED =====
-function renderFeatured() {
-  const featured = allProducts.filter(p => !p.sold).slice(0, 3);
-  if (!featured.length) return;
-  document.getElementById('featuredGrid').innerHTML = featured.map(p => cardHTML(p)).join('');
-  document.getElementById('featuredSection').style.display = 'block';
-}
 
 // ===== MAIN RENDER =====
 function getFiltered() {
