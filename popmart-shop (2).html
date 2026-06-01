@@ -826,7 +826,6 @@ function parseCSV(text) {
 async function loadProducts() {
   document.getElementById('loadingMsg').classList.add('show');
   document.getElementById('errorBanner').classList.remove('show');
-  document.getElementById('featuredSection').style.display = 'none';
   renderSkeletons();
 
   try {
